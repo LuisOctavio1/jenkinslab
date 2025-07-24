@@ -32,7 +32,13 @@ pipeline {
             }
             post {
                 always {
-                    publishTestResults testResultsPattern: 'test-results.xml'
+                    script {
+                        if (fileExists('test-results.xml')) {
+                            junit 'test-results.xml'
+                        } else {
+                            echo 'No test result files found'
+                        }
+                    }
                 }
             }
         }
